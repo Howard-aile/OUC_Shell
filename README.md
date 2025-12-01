@@ -71,6 +71,10 @@ systemctl start oucshell.service
 systemctl enable oucshell.service
 ```
 
+# 效果演示
+
+![img.png](show.png)
+
 ## 🤝 贡献者
 
 <!-- readme: contributors -start -->
