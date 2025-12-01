@@ -88,7 +88,7 @@ Port = "465"
 User = "your_smtp_email@qq.com"
 Password = "your_smtp_auth_code"
 
-# --- 功能模块: 电费提醒 ---
+# 电费提醒模块
 [Electricity]
 Enabled = true # 是否启用本模块
 Campus = "xha" # 校区选择
@@ -99,6 +99,21 @@ StudentID = "XXX" # 学号
 Token = "9f7c6e76979c4cb9dd3828f8cc44a5ef" # MD5(Sd1234) 居然加密这么简单吗?
 # [照明警戒值, 空调警戒值]
 RemindTime = [30.0, 30.0]
+
+# 网费提醒模块
+[Internet]
+Enabled = true # 是否启用本模块
+Campus = "xha" # 校区选择
+# xha = 西海岸
+
+[Internet.xha]
+StudentID = "XXX" # 学号
+# [最低余额, 触发天数]
+# 触发天数: 离下个月1号还有几天时开始检测。
+# e.g.
+# 填 -1 表示忽略日期，只要余额低就提醒。
+# 填 5 表示只有余额低 且 离月底少于5天时才提醒。
+RemindTime = [10, -1]
 EOF
         log "配置文件已生成: $CONFIG_FILE"
         log "检测到第一次运行，脚本将自动退出，请编辑配置文件后重新启动"
@@ -116,7 +131,7 @@ check_and_install_dependencies
 check_and_create_config
 
 # 任务间隔 (秒)
-INTERVAL_ELEC=1800  # 半小时
+INTERVAL_ELEC=7200  # 2小时
 LAST_RUN_ELEC=0
 
 log "进入循环调度模式..."
@@ -124,8 +139,9 @@ log "进入循环调度模式..."
 while true; do
     CURRENT_TIME=$(date +%s)
 
-    # 电费监控
     # 计算时间差
+
+    # 电费监控
     TIME_DIFF=$((CURRENT_TIME - LAST_RUN_ELEC))
 
     if [ $TIME_DIFF -ge $INTERVAL_ELEC ]; then
@@ -145,6 +161,26 @@ while true; do
         fi
 
         LAST_RUN_ELEC=$(date +%s)
+    fi
+
+    # 电费监控
+    if [ $TIME_DIFF -ge $INTERVAL_NET ]; then
+        SCRIPT_PATH="$SRC_DIR/internet_monitor.sh"
+
+        if [ -f "$SCRIPT_PATH" ]; then
+            chmod +x "$SCRIPT_PATH"
+            log "调度任务: 网费监控..."
+
+            /bin/bash "$SCRIPT_PATH" "$CONFIG_FILE" 2>&1 | while IFS= read -r line; do
+                log "[net_monitor] $line"
+            done
+
+            log "任务结束: 网费监控"
+        else
+            log "警告: 找不到脚本 $SCRIPT_PATH"
+        fi
+
+        LAST_RUN_NET=$(date +%s)
     fi
 
     # 其他任务(预留)
