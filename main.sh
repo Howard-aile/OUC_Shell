@@ -96,7 +96,7 @@ Campus = "xha" # 校区选择
 
 [Electricity.xha]
 StudentID = "XXX" # 学号
-Token = "YOUR_TOKEN_HERE"
+Token = "9f7c6e76979c4cb9dd3828f8cc44a5ef" # MD5(Sd1234) 居然加密这么简单吗?
 # [照明警戒值, 空调警戒值]
 RemindTime = [30.0, 30.0]
 EOF
