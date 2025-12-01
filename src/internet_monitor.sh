@@ -66,7 +66,7 @@ days_until_next_month() {
 
     if date -v1d -v+1m +%s >/dev/null 2>&1; then
         # macOS/BSD date
-        next_month_ts=$(date -v1d -v+1m +%s)
+        next_month_ts=$(date -v+1m -v1d +%s)
     else
         # GNU date
         next_month_ts=$(date -d "$(date +%Y-%m-01) +1 month" +%s)
