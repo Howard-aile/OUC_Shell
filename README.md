@@ -81,7 +81,8 @@ bash main.sh
   <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
   <plist version="1.0">
   <dict>
-    <key>Label</key><string>cn.ouc.shell</string>
+    <key>Label</key>
+    <string>cn.ouc.shell</string>
     <key>ProgramArguments</key>
     <array>
       <string>/bin/bash</string>
