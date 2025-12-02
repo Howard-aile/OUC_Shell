@@ -79,8 +79,8 @@ bash main.sh
   cd OUC_Shell
   bash main.sh
   ```
+> **注意**：下方 plist 文件中的所有 `/绝对路径/到/OUC_Shell` 都需要替换为你的实际仓库绝对路径（例如 `/Users/yourname/github_project/OUC_Shell`），否则服务无法正常运行。
 - 创建 LaunchAgent（把路径换成你自己的绝对路径）
-  ```
   cat > ~/Library/LaunchAgents/cn.ouc.shell.plist <<'EOF'
   <?xml version="1.0" encoding="UTF-8"?>
   <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
